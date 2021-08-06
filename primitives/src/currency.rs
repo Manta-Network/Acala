@@ -179,6 +179,8 @@ create_currency_id! {
 		DOT("Polkadot", 10) = 2,
 		LDOT("Liquid DOT", 10) = 3,
 		RENBTC("Ren Protocol BTC", 8) = 4,
+		// Manta Token Symbol
+		MA("Manta", 12) = 5,
 
 		// Kusama Ecosystem
 		KAR("Karura", 12) = 128,

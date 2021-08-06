@@ -736,6 +736,7 @@ parameter_type_with_key! {
 				TokenSymbol::LDOT |
 				TokenSymbol::RENBTC |
 				TokenSymbol::KAR |
+				TokenSymbol::MA |
 				TokenSymbol::CASH => Balance::max_value() // unsupported
 			},
 			CurrencyId::DexShare(dex_share_0, _) => {
@@ -1377,7 +1378,11 @@ parameter_types! {
 	pub KsmPerSecond: (MultiLocation, u128) = (X1(Parent), ksm_per_second());
 }
 
-pub type Barrier = (TakeWeightCredit, AllowTopLevelPaidExecutionFrom<All<MultiLocation>>);
+pub type Barrier = (
+	TakeWeightCredit,
+	AllowTopLevelPaidExecutionFrom<All<MultiLocation>>,
+	AllowUnpaidExecutionFrom<All<MultiLocation>>,
+);
 
 pub struct ToTreasury;
 impl TakeRevenue for ToTreasury {
@@ -1505,7 +1510,7 @@ impl Convert<CurrencyId, Option<MultiLocation>> for CurrencyIdConvert {
 		use TokenSymbol::*;
 		match id {
 			Token(KSM) => Some(X1(Parent)),
-			Token(KAR) | Token(KUSD) | Token(LKSM) | Token(RENBTC) => Some(native_currency_location(id)),
+			Token(MA) | Token(KAR) | Token(KUSD) | Token(LKSM) | Token(RENBTC) => Some(native_currency_location(id)),
 			_ => None,
 		}
 	}
@@ -1521,7 +1526,7 @@ impl Convert<MultiLocation, Option<CurrencyId>> for CurrencyIdConvert {
 				if let Ok(currency_id) = CurrencyId::decode(&mut &key[..]) {
 					// check `currency_id` is cross-chain asset
 					match currency_id {
-						Token(KAR) | Token(KUSD) | Token(LKSM) | Token(RENBTC) => Some(currency_id),
+						Token(MA) | Token(KAR) | Token(KUSD) | Token(LKSM) | Token(RENBTC) => Some(currency_id),
 						_ => None,
 					}
 				} else {
